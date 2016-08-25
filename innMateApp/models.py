@@ -8,8 +8,68 @@ from django.utils.timezone import now
 #from django.db import models
 from django.utils import timezone
 
+class Establishment(models.Model):
+    author = models.ForeignKey('auth.User')
+    title = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
+    cell = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
+    comments = models.TextField()
+    created_date = models.DateTimeField(
+            default=timezone.now)
+    published_date = models.DateTimeField(
+            blank=True, null=True)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.name
+
+class Employee(models.Model):
+    establishment = models.ForeignKey(Establishment, default="")
+    author = models.ForeignKey('auth.User')
+    title = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
+    cell = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
+    comments = models.TextField()
+    created_date = models.DateTimeField(
+            default=timezone.now)
+    published_date = models.DateTimeField(
+            blank=True, null=True)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.name
+
+class Contractor(models.Model):
+    establishment = models.ForeignKey(Establishment, default="")
+    author = models.ForeignKey('auth.User')
+    title = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
+    cell = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
+    comments = models.TextField()
+    created_date = models.DateTimeField(
+            default=timezone.now)
+    published_date = models.DateTimeField(
+            blank=True, null=True)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.name
+
 
 class Guest(models.Model):
+    establishment = models.ForeignKey(Establishment, default="")
     author = models.ForeignKey('auth.User')
     title = models.CharField(max_length=200)
     name = models.CharField(max_length=200)
@@ -29,6 +89,7 @@ class Guest(models.Model):
         return self.name
 
 class Visit(models.Model):
+    guestname = models.ForeignKey(Guest, default="")
     author = models.ForeignKey('auth.User')
     title = models.CharField(max_length=200)
     text = models.TextField()
@@ -43,7 +104,6 @@ class Visit(models.Model):
 
     def __str__(self):
         return self.title
-
 
 
 @python_2_unicode_compatible
